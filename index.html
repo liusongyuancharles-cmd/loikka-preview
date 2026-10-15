@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>SpicyX 1.7 — Loikka preview</title>
+  <meta name="description" content="Public preview of Loikka's membership-gated SpicyX 1.7 page. No API key. Nothing is generated." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%2307080a' width='32' height='32' rx='8'/%3E%3Cpath fill='%23ff5f93' d='M16 6l2.2 6.2H25l-5.2 3.8 2 6.2L16 18.6 10.2 22l2-6.2L7 12.2h6.8z'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg: #07080a; --bg-2: #0b0d10; --surface: #111317; --surface-2: #171a1f;
+      --line: rgba(255,255,255,.08); --line-2: rgba(255,255,255,.15);
+      --text: #f3f5ef; --muted: #9aa0a8; --volt: #ff5f93; --hot: #ffb25f;
+      --font: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body { background: var(--bg); color: var(--text); font: 15px/1.5 var(--font); min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+    button, textarea { font: inherit; color: inherit; }
+    button { background: none; border: 0; cursor: pointer; }
+    .topbar { position: sticky; top: 0; z-index: 5; height: 64px; display: flex; align-items: center; gap: 22px; padding: 0 24px; background: rgba(7,8,10,.86); border-bottom: 1px solid var(--line); backdrop-filter: blur(14px); }
+    .brand { font: italic 800 22px/1 var(--font); letter-spacing: .04em; text-transform: uppercase; }
+    .nav { display: flex; gap: 4px; }
+    .nav a { color: var(--muted); font-weight: 600; font-size: 14px; padding: 8px 12px; border-radius: 10px; }
+    .nav a.on { color: var(--volt); }
+    .pill { margin-left: auto; border: 1px solid rgba(255,178,95,.45); color: var(--hot); border-radius: 999px; padding: 6px 10px; font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 28px 20px 64px; }
+    .banner { background: rgba(255,95,147,.1); border: 1px solid rgba(255,95,147,.35); border-radius: 16px; padding: 14px 16px; margin-bottom: 22px; color: var(--text); }
+    .banner b { color: var(--volt); }
+    .two { display: grid; grid-template-columns: 1.1fr .9fr; gap: 22px; }
+    .eyebrow { letter-spacing: .14em; text-transform: uppercase; font-size: 12px; font-weight: 700; color: var(--volt); margin: 0 0 6px; }
+    h1 { font-size: 42px; line-height: 1.05; margin: 0 0 10px; }
+    .sub, .note { color: var(--muted); margin: 0; }
+    .notice, .card { background: var(--surface); border: 1px solid var(--line-2); border-radius: 16px; padding: 14px 16px; }
+    .stack { display: grid; gap: 14px; align-content: start; }
+    label { display: block; font-weight: 700; margin-bottom: 8px; }
+    textarea { width: 100%; min-height: 120px; resize: vertical; background: var(--bg-2); border: 1px solid var(--line-2); border-radius: 12px; padding: 12px; }
+    textarea:focus { outline: none; border-color: var(--volt); }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { border: 1px solid var(--line-2); border-radius: 999px; padding: 8px 12px; color: var(--muted); font-weight: 700; }
+    .chip.on { color: var(--volt-ink, #19050d); background: var(--volt); border-color: var(--volt); }
+    .go { width: 100%; height: 52px; border-radius: 14px; background: var(--volt); color: #19050d; font-weight: 800; font-size: 16px; }
+    .go:disabled { opacity: .55; }
+    .drop { border: 1px dashed var(--line-2); border-radius: 16px; padding: 22px; text-align: center; color: var(--muted); }
+    .check { display: flex; gap: 10px; align-items: flex-start; color: var(--muted); }
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #171a1f; border: 1px solid var(--line-2); border-radius: 999px; padding: 10px 16px; display: none; max-width: min(92vw, 520px); }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,.62); display: none; place-items: center; padding: 20px; }
+    .modal.show, .toast.show { display: grid; }
+    .sheet { width: min(440px, 100%); background: var(--surface); border: 1px solid var(--line-2); border-radius: 22px; padding: 22px; display: grid; gap: 12px; }
+    .ghost { height: 44px; border-radius: 12px; border: 1px solid var(--line-2); font-weight: 700; }
+    @media (max-width: 800px) { .two { grid-template-columns: 1fr; } .nav { display: none; } h1 { font-size: 34px; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./">Loikka</a>
+    <nav class="nav">
+      <a href="./">Home</a>
+      <a class="on" href="./">Model</a>
+    </nav>
+    <span class="pill">PUBLIC PREVIEW</span>
+  </header>
+  <main class="wrap">
+    <div class="banner">
+      <b>分享预览。</b> 这一页只给别人看界面。没有 API Key，不会扣费，也不会把照片或提示词发到 SpicyX。
+      Membership and generation stay on the private app.
+    </div>
+    <div class="two">
+      <section class="stack">
+        <div>
+          <p class="eyebrow">Members · image to video</p>
+          <h1>SpicyX 1.7</h1>
+          <p class="sub">Model <b>spicy1.7-i2v-spicy</b>, 720p. On the real app this stays locked until a membership is active. 5 seconds costs 80 credits.</p>
+        </div>
+        <div class="notice">Adults only. Upload yourself, or someone who gave permission. Anyone under 18, face swaps and public figures are refused.</div>
+        <div>
+          <label for="motion">Motion</label>
+          <textarea id="motion">A slow turn toward the camera, evening light, realistic motion.</textarea>
+        </div>
+        <div>
+          <label>Length</label>
+          <div class="chips" id="lengths"></div>
+        </div>
+      </section>
+      <section class="stack">
+        <div class="drop" id="drop"><b>Add your photo</b><br />JPG or PNG stays in this browser. It is not uploaded.</div>
+        <label class="check"><input id="rights" type="checkbox" /> <span>This photo is me, or I have permission to use it. No minors, no public figures.</span></label>
+        <button class="go" id="go" type="button">Unlock with membership · 80</button>
+        <p class="note" id="state">Preview state: locked. No model key is present on this page.</p>
+      </section>
+    </div>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+  <div class="modal" id="modal">
+    <div class="sheet">
+      <h2 style="margin:0">Members only</h2>
+      <p class="sub">SpicyX 1.7 image-to-video unlocks with any membership on the private Loikka app. This public page cannot charge a card or call the model.</p>
+      <button class="go" id="simulate" type="button">Show the unlocked preview</button>
+      <button class="ghost" id="close" type="button">Not now</button>
+    </div>
+  </div>
+  <script>
+    const costs = { 5: 80, 8: 128, 10: 160, 15: 240 };
+    let seconds = 5;
+    let member = false;
+    let photo = false;
+    const toast = document.getElementById('toast');
+    const go = document.getElementById('go');
+    const blockedMinor = /未成年|幼女|幼童|萝莉|正太|儿童|小孩|小学生|初中生|高中生|underage|preteen|loli|shota|\b(child|children|kid|kids|minor|minors|teen|teenager|schoolgirl|schoolboy)\b|years?\s*old|\d{1,2}\s*岁/i;
+    const blockedFace = /\b(face ?swap|deep ?fake|celebrity|public figure)\b|换脸|公众人物|名人/i;
+
+    function say(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(say.timer);
+      say.timer = setTimeout(() => toast.classList.remove('show'), 3200);
+    }
+    function paint() {
+      document.getElementById('lengths').querySelectorAll('button').forEach((button) => {
+        button.classList.toggle('on', Number(button.dataset.seconds) === seconds);
+      });
+      go.textContent = member ? `Generate · ${costs[seconds]}` : `Unlock with membership · ${costs[seconds]}`;
+      document.getElementById('state').textContent = member
+        ? 'Preview state: membership unlocked. Generate still stays on this page and does not call SpicyX.'
+        : 'Preview state: locked. No model key is present on this page.';
+    }
+    const lengths = document.getElementById('lengths');
+    Object.keys(costs).forEach((key) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'chip';
+      button.dataset.seconds = key;
+      button.textContent = `${key}s · ${costs[key]}`;
+      button.addEventListener('click', () => { seconds = Number(key); paint(); });
+      lengths.appendChild(button);
+    });
+    document.getElementById('drop').addEventListener('click', () => {
+      photo = true;
+      document.getElementById('drop').innerHTML = '<b>Photo kept in this browser</b><br />It will not be uploaded.';
+      say('Photo stays on this device.');
+    });
+    document.getElementById('go').addEventListener('click', () => {
+      if (!member) { document.getElementById('modal').classList.add('show'); return; }
+      if (!photo) { say('Add your photo first. It stays in this browser.'); return; }
+      if (!document.getElementById('rights').checked) { say('Confirm the photo is you, or that you have permission.'); return; }
+      const text = document.getElementById('motion').value;
+      if (blockedMinor.test(text)) { say('Loikka does not generate anyone under 18.'); return; }
+      if (blockedFace.test(text)) { say('Face swaps and public figures are not available.'); return; }
+      if (text.trim().length < 3) { say('Describe the motion in a few words.'); return; }
+      say('Preview only. This page has no API key and did not send a generation.');
+    });
+    document.getElementById('simulate').addEventListener('click', () => {
+      member = true;
+      document.getElementById('modal').classList.remove('show');
+      paint();
+      say('Unlocked preview. Still no charge and no generation.');
+    });
+    document.getElementById('close').addEventListener('click', () => document.getElementById('modal').classList.remove('show'));
+    paint();
+  </script>
+</body>
+</html>
