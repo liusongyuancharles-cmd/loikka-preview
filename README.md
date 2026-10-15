@@ -1,5 +1,7 @@
-# Loikka model preview
+# Loikka
 
-Public look at the membership-gated SpicyX 1.7 page.
+The shareable site is the full app, not a one-page mock.
 
-This site has no API key. Photos and prompts stay in the browser. Nothing is sent to SpicyX and nothing is charged.
+https://4d30b27cc4b4d6.lhr.life/
+
+That address stays up while the demo server on this computer is running. It uses test mode: demo login, sample clips, and test memberships. No API key is included.
